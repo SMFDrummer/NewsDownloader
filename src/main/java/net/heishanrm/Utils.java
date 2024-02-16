@@ -42,7 +42,7 @@ public class Utils {
         }
     }
 
-    public static void videoDownloader(int year, int month, int day,String url) {
+    public static void videoDownloader(int year, int month, int day, String url) {
         if (url == null) System.exit(1);
         DownloadFactory.M3u8Download m3u8Download = DownloadFactory.getInstance(url);
         //设置生成目录
@@ -78,9 +78,9 @@ public class Utils {
             @Override
             public void process(String downloadUrl, int finished, int sum, float percent) {
                 Log.c(
-                        Log.p("已下载:"+finished, Log.Color.GREEN),Log.Separator,
-                        Log.p("一共:"+sum, Log.Color.YELLOW),Log.Separator,
-                        Log.p("已完成:"+percent+"%", Log.Color.BLUE)
+                        Log.p("已下载:" + finished, Log.Color.GREEN), Log.Separator,
+                        Log.p("一共:" + sum, Log.Color.YELLOW), Log.Separator,
+                        Log.p("已完成:" + percent + "%", Log.Color.BLUE)
                 );
             }
 
@@ -91,7 +91,7 @@ public class Utils {
 
             @Override
             public void end() {
-                Log.s("下载完毕，文件位于:"+System.getProperty("user.dir") + File.separator + "download"+File.separator+year + "-" + month + "-" + day+".mp4");
+                Log.s("下载完毕，文件位于:" + System.getProperty("user.dir") + File.separator + "download" + File.separator + year + "-" + month + "-" + day + ".mp4");
             }
         });
         //开始下载

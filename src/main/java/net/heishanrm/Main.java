@@ -9,6 +9,6 @@ public class Main {
         int month = CustomScanner.Int(false);
         Log.v("输入日");
         int day = CustomScanner.Int(false);
-        Utils.videoDownloader(year,month,day,Utils.getUrl(year,month,day));
+        Utils.videoDownloader(year, month, day, Utils.getUrl(year, month, day));
     }
 }

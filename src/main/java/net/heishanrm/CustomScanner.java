@@ -256,11 +256,11 @@ public class CustomScanner {
         }
     }
 
-    public static JSONObject JSONObject(boolean confirm){
+    public static JSONObject JSONObject(boolean confirm) {
         Scanner scanner = new Scanner(System.in);
-        while (true){
+        while (true) {
             String str = Paragraph(false);
-            if (JSON.isValidObject(str)){
+            if (JSON.isValidObject(str)) {
                 JSONObject jsonObject = JSON.parseObject(str);
                 if (confirm) {
                     Log.a(jsonObject.toJSONString(JSONWriter.Feature.WriteMapNullValue));
@@ -280,11 +280,12 @@ public class CustomScanner {
             }
         }
     }
-    public static JSONArray JSONArray(boolean confirm){
+
+    public static JSONArray JSONArray(boolean confirm) {
         Scanner scanner = new Scanner(System.in);
-        while (true){
+        while (true) {
             String str = Paragraph(false);
-            if (JSON.isValidArray(str)){
+            if (JSON.isValidArray(str)) {
                 JSONArray jsonArray = JSON.parseArray(str);
                 if (confirm) {
                     Log.a(jsonArray.toJSONString(JSONWriter.Feature.WriteMapNullValue));

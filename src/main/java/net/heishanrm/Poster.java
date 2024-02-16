@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 
 public class Poster {
     private static String urlGenerator(String timeStamp) {
-        return "https://heishan.bdy.lnyun.com.cn/cloud/apis/cms/app/channel/arts?ordertime="+timeStamp+"&channelid=110&isfirst=false&pageid=20";
+        return "https://heishan.bdy.lnyun.com.cn/cloud/apis/cms/app/channel/arts?ordertime=" + timeStamp + "&channelid=110&isfirst=false&pageid=20";
     }
 
     public static String post(String timeStamp) {

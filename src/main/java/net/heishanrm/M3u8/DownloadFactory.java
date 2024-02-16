@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static net.heishanrm.M3u8.utils.Constant.FILESEPARATOR;
+
 @SuppressWarnings("unused")
 
 public class DownloadFactory {
@@ -35,68 +36,73 @@ public class DownloadFactory {
         Security.addProvider(new BouncyCastleProvider());
     }
 
+    /**
+     * 获取实例
+     *
+     * @param downloadUrl 要下载的链接
+     * @return 返回m3u8下载实例
+     */
+    public static M3u8Download getInstance(String downloadUrl) {
+        if (m3u8Download == null) {
+            synchronized (M3u8Download.class) {
+                if (m3u8Download == null)
+                    m3u8Download = new M3u8Download(downloadUrl);
+            }
+        }
+        return m3u8Download;
+    }
+
+    public static void destroied() {
+        m3u8Download = null;
+    }
 
     public static class M3u8Download {
 
-        //要下载的m3u8链接
-        private final String DOWNLOADURL;
-
         //优化内存占用
         private static final BlockingQueue<byte[]> BLOCKING_QUEUE = new LinkedBlockingQueue<>();
-
-        //线程数
-        private int threadCount = 1;
-
-        //重试次数
-        private int retryCount = 30;
-
-        //链接连接超时时间（单位：毫秒）
-        private long timeoutMillisecond = 1000L;
-
-        //合并后的文件存储目录
-        private String dir;
-
-        //合并后的视频文件名称
-        private String fileName;
-
-        //已完成ts片段个数
-        private int finishedCount = 0;
-
-        //解密算法名称
-        private String method;
-
-        //密钥
-        private String key = "";
-
-        //密钥字节
-        private byte[] keyBytes = new byte[16];
-
-        //key是否为字节
-        private boolean isByte = false;
-
-        //IV
-        private String iv = "";
-
+        //要下载的m3u8链接
+        private final String DOWNLOADURL;
         //所有ts片段下载链接
         private final Set<String> tsSet = new LinkedHashSet<>();
-
         //解密后的片段
         private final Set<File> finishedFiles = new ConcurrentSkipListSet<>(Comparator.comparingInt(o -> Integer.parseInt(o.getName().replace(".xyz", ""))));
-
-        //已经下载的文件大小
-        private BigDecimal downloadBytes = new BigDecimal(0);
-
-        //监听间隔
-        private volatile long interval = 0L;
-
         //自定义请求头
         private final Map<String, Object> requestHeaderMap = new HashMap<>();
-
         //监听事件
         private final Set<DownloadListener> listenerSet = new HashSet<>(5);
-
+        //线程数
+        private int threadCount = 1;
+        //重试次数
+        private int retryCount = 30;
+        //链接连接超时时间（单位：毫秒）
+        private long timeoutMillisecond = 1000L;
+        //合并后的文件存储目录
+        private String dir;
+        //合并后的视频文件名称
+        private String fileName;
+        //已完成ts片段个数
+        private int finishedCount = 0;
+        //解密算法名称
+        private String method;
+        //密钥
+        private String key = "";
+        //密钥字节
+        private byte[] keyBytes = new byte[16];
+        //key是否为字节
+        private boolean isByte = false;
+        //IV
+        private String iv = "";
+        //已经下载的文件大小
+        private BigDecimal downloadBytes = new BigDecimal(0);
+        //监听间隔
+        private volatile long interval = 0L;
         //代理设置
         private Proxy proxy;
+
+        private M3u8Download(String DOWNLOADURL) {
+            this.DOWNLOADURL = DOWNLOADURL;
+            requestHeaderMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+        }
 
         /**
          * 开始下载视频
@@ -108,7 +114,6 @@ public class DownloadFactory {
                 Log.i("不需要解密");
             startDownload();
         }
-
 
         /**
          * 下载视频
@@ -627,11 +632,6 @@ public class DownloadFactory {
             listenerSet.add(downloadListener);
         }
 
-        private M3u8Download(String DOWNLOADURL) {
-            this.DOWNLOADURL = DOWNLOADURL;
-            requestHeaderMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
-        }
-
         public Proxy getProxy() {
             return proxy;
         }
@@ -648,26 +648,6 @@ public class DownloadFactory {
             this.proxy = new Proxy(type, new InetSocketAddress(address, port));
         }
 
-    }
-
-    /**
-     * 获取实例
-     *
-     * @param downloadUrl 要下载的链接
-     * @return 返回m3u8下载实例
-     */
-    public static M3u8Download getInstance(String downloadUrl) {
-        if (m3u8Download == null) {
-            synchronized (M3u8Download.class) {
-                if (m3u8Download == null)
-                    m3u8Download = new M3u8Download(downloadUrl);
-            }
-        }
-        return m3u8Download;
-    }
-
-    public static void destroied() {
-        m3u8Download = null;
     }
 
 }
